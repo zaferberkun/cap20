@@ -1,0 +1,49 @@
+{
+  "engines": {
+    "node": "16.x.x"
+  },
+  "name": "datadesignpattern",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "compile": "tsc --project tsconfig.json",
+    "package": "cp -r package.json ./lib",
+    "css": "mkdirp ./lib/css && cp -r ./css/* ./lib/css",
+    "images": "mkdirp ./lib/images && cp -r images/* ./lib/images",
+    "hbs": "mkdirp ./lib/render-templates && cp -r render-templates/* ./lib/render-templates",
+    "start": "node ./lib/server.js",
+    "gcp-build": "npm run build-target",
+    "delete": "rm -rf lib",
+    "mongo": "mongosh 'mongodb+srv: //cluster0.eharo.mongodb.net/CAP20' --username zaferberkun",
+    "build": "npm run delete && npm run compile && npm run package && npm run css && npm run images && npm run hbs && npm start",
+    "start-file-watch": "tput civis && npm run compile && node ./lib/html-file-watch.js",
+    "build-target": "npm run compile && npm run package && npm run css && npm run images && npm run hbs"
+  },
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "@google-cloud/logging": "^9.5.5",
+    "@google-cloud/secret-manager": "^3.10.0",
+    "express": "^4.17.1",
+    "express-handlebars": "^5.3.3",
+    "handlebars": "^4.7.7",
+    "helmet": "^4.6.0",
+    "mkdirp": "^1.0.4",
+    "mongodb": "^4.1.1",
+    "mongoose": "^5.13.7",
+    "path": "^0.12.7",
+    "systemjs": "^6.10.3",
+    "tslib": "^2.3.1",
+    "typescript": "^4.3.5"
+  },
+  "type": "module",
+  "devDependencies": {
+    "@types/express": "^4.17.13",
+    "@types/express-handlebars": "^5.3.1",
+    "@types/express-session": "^1.17.4",
+    "@types/passport": "^1.0.7",
+    "@types/passport-local": "^1.0.34"
+  }
+}
