@@ -33,6 +33,7 @@
     "mkdirp": "^1.0.4",
     "mongodb": "^4.1.1",
     "mongoose": "^5.13.7",
+    "nodemailer": "^6.6.5",
     "path": "^0.12.7",
     "systemjs": "^6.10.3",
     "tslib": "^2.3.1",

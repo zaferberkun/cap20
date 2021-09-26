@@ -3,6 +3,7 @@ import exhbs from 'express-handlebars'
 import hb, { registerPartial } from 'handlebars'
 import { fileURLToPath } from 'url'
 import path from 'path'
+import nodemailer from 'nodemailer'
 
 import * as $db_constants from './DBconstants.js'
 import * as db_api from './db-api.js'
@@ -17,6 +18,8 @@ import HTML_IDS from './HTMLIDConstantsApp.js'
 import { EventEmitter } from 'events';
 import { ServerEvents } from './ServerEvents.js';
 
+import { GMAIL_PASSWORD } from './secrets.js'
+
 let db_html: Document | null = null;
 
 (async function start_server() {
@@ -26,6 +29,13 @@ let db_html: Document | null = null;
   // Connect mongoose to our DB.
   db_init.connectDB(MONGO_URI);
 
+  let transport = nodemailer.createTransport({
+    service: 'gmail',
+    auth: {
+      user: 'zaferberkun@gmail.com',
+      pass: GMAIL_PASSWORD
+    }
+  });
 
   //Do all the async stuff that must occur in sequence, but don't hold up the rest of the code...
   let initHTMLPromise = initHTMLWatch();
@@ -55,6 +65,22 @@ let db_html: Document | null = null;
 
   app.get('/', (req, res) => {
 
+    //send yourself an email
+    var mailOptions = {
+      from: 'z@gmail.com',
+      to: 'zaferberkun@yahoo.com',
+      subject: 'Sending Email using Node.js',
+      text: 'That was easy!'
+    };
+
+    transport.sendMail(mailOptions, function (error, info) {
+      if (error) {
+        console.log(error);
+      } else {
+        console.log('Email sent: ' + info.response);
+      }
+    });
+
     //Create the hb template.
     try {
       if (db_html) {
@@ -66,7 +92,7 @@ let db_html: Document | null = null;
       }
       else {
         console.log("Rendering using old method")
-        return res.render('index')
+        return res.render('index');
       }
     }
     catch {
@@ -106,7 +132,7 @@ async function initHTMLWatch() {
   //console.log("db_html ", db_html);
   registerPartials(db_html)
 
-  // Init watching HTML and CSS database collections.
+  // Init watching HTML database collection.
   const HTMLChangeEvent: EventEmitter = await db_init.watchHTML_DB(MONGO_URI, $db_constants.CAPITALISM20_DB, $db_constants.MAIN_PAGE_HTML_SOURCE)
 
   // Setup watch for DB changes, if there is a change copy it to "res.locals.HTML" so it is available to handlebars.

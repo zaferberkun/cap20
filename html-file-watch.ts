@@ -1,5 +1,4 @@
 import fs_promises from 'fs/promises';
-import fs from 'fs';
 
 import { MONGO_URI } from './secrets.js';
 import { MongoClient } from 'mongodb'

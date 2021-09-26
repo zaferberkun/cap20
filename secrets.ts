@@ -17,5 +17,5 @@ async function accessSecretVersion(name: string) {
 }
 
 const MONGO_URI = await accessSecretVersion('projects/334220063553/secrets/MONGO_LOGIN_URL_CAP20/versions/1');
-
-export { MONGO_URI }
+const GMAIL_PASSWORD = await accessSecretVersion('projects/334220063553/secrets/GMAIL/versions/1')
+export { MONGO_URI, GMAIL_PASSWORD }
